@@ -36,7 +36,7 @@
             // 
             // btnStart
             // 
-            btnStart.Location = new Point(328, 121);
+            btnStart.Location = new Point(327, 121);
             btnStart.Name = "btnStart";
             btnStart.Size = new Size(146, 54);
             btnStart.TabIndex = 0;
@@ -46,17 +46,17 @@
             // 
             // txtOutput
             // 
-            txtOutput.Location = new Point(170, 194);
+            txtOutput.Location = new Point(160, 195);
             txtOutput.Multiline = true;
             txtOutput.Name = "txtOutput";
             txtOutput.ReadOnly = true;
-            txtOutput.Size = new Size(475, 134);
+            txtOutput.Size = new Size(481, 134);
             txtOutput.TabIndex = 1;
             txtOutput.TextChanged += textBox1_TextChanged;
             // 
             // btnStop
             // 
-            btnStop.Location = new Point(357, 375);
+            btnStop.Location = new Point(353, 375);
             btnStop.Name = "btnStop";
             btnStop.Size = new Size(94, 29);
             btnStop.TabIndex = 2;
@@ -68,7 +68,7 @@
             // 
             Title.AutoSize = true;
             Title.Font = new Font("Segoe UI", 18F);
-            Title.Location = new Point(223, 23);
+            Title.Location = new Point(215, 23);
             Title.Name = "Title";
             Title.Size = new Size(370, 41);
             Title.TabIndex = 3;

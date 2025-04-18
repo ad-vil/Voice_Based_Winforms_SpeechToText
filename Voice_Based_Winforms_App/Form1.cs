@@ -51,6 +51,20 @@ namespace Voice_Based_Winforms_App
                 if (evt.Result.Reason == ResultReason.RecognizedSpeech)
                 {
                     SafeAppend($"Recognized: {evt.Result.Text}\r\n");
+
+                    // switch to form 2 based on voice command
+                    if (evt.Result.Text.Contains("go to form 2", StringComparison.OrdinalIgnoreCase))
+                    {
+                        recognizer.StopContinuousRecognitionAsync().Wait(); // stop recognition
+
+                        // open form 2
+                        this.Invoke(new MethodInvoker(() =>
+                        {
+                            Form2 form2 = new Form2();
+                            form2.Show();
+                            this.Hide(); // hide current
+                        }));
+                    }
                 }
                 else if (evt.Result.Reason == ResultReason.NoMatch)
                 {
