@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voice_Based_Winforms_App", "Voice_Based_Winforms_App\Voice_Based_Winforms_App.csproj", "{2B088174-A16D-44E7-91B1-12C5C1536B27}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B088174-A16D-44E7-91B1-12C5C1536B27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B088174-A16D-44E7-91B1-12C5C1536B27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B088174-A16D-44E7-91B1-12C5C1536B27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B088174-A16D-44E7-91B1-12C5C1536B27}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {11FCB149-1CC4-4198-8106-6C1B0655377A}
+	EndGlobalSection
+EndGlobal
