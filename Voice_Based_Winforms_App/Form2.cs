@@ -17,11 +17,6 @@ namespace Voice_Based_Winforms_App
             InitializeComponent();
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         // simple button to go back to form 1
         private void btnCloseForm_Click(object sender, EventArgs e)
         {
@@ -30,15 +25,14 @@ namespace Voice_Based_Winforms_App
             this.Close();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
+        // TODO LIST
 
-        }
-
-        // TODO: add input validation - don't allow blank fields
         // TODO: add save button functionality
+        // TODO: add input validation - don't allow blank fields
         // TODO: clear input fields method instead of doing everything separately
         // TODO: make it so CSV doesnt reset on close, saves information
+
+        // TODO: convert text boxes to voice commands
 
         private void Form2_Load(object sender, EventArgs e)
         {
@@ -54,25 +48,10 @@ namespace Voice_Based_Winforms_App
             // add new row to DataGrid
             dataGridView1.Rows.Add(fNameBox.Text, lNameBox.Text, cityBox.Text, countryBox.Text);
             // clear input fields
-            fNameBox.Clear(); 
+            fNameBox.Clear();
             lNameBox.Clear();
             cityBox.Clear();
             countryBox.Clear();
-        }
-
-        private void lNameBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cityBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void countryBox_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -137,6 +116,31 @@ namespace Voice_Based_Winforms_App
         }
 
         private void btnSave_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Title_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void fName_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lNameBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cityBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void countryBox_TextChanged(object sender, EventArgs e)
         {
 
         }

@@ -52,7 +52,7 @@
             Title.Size = new Size(111, 41);
             Title.TabIndex = 0;
             Title.Text = "Form 2";
-            Title.Click += label1_Click;
+            Title.Click += Title_Click;
             // 
             // btnCloseForm
             // 
@@ -71,7 +71,7 @@
             fNameBox.PlaceholderText = "First name...";
             fNameBox.Size = new Size(189, 27);
             fNameBox.TabIndex = 2;
-            fNameBox.TextChanged += textBox1_TextChanged;
+            fNameBox.TextChanged += fName_TextChanged;
             // 
             // lNameBox
             // 

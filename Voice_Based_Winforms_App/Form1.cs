@@ -6,7 +6,7 @@ namespace Voice_Based_Winforms_App
 {
     public partial class Form1 : Form
     {
-        private SpeechRecognizer recognizer;
+        private SpeechRecognizer? recognizer;
 
         public Form1()
         {
