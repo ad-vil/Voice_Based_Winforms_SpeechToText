@@ -117,7 +117,38 @@ namespace Voice_Based_Winforms_App
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            string csvFilePath = "data.csv";
 
+            try
+            {
+                var lines = new List<string>();
+
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (!row.IsNewRow) // skipping new placeholder
+                    {
+                        // extracting values in cells
+                        var values = new string[]
+                        {
+                            row.Cells["FirstName"].Value?.ToString() ?? "",
+                            row.Cells["LastName"].Value?.ToString() ?? "",
+                            row.Cells["City"].Value?.ToString() ?? "",
+                            row.Cells["Country"].Value?.ToString() ?? ""
+                        };
+                        lines.Add(string.Join(",", values));
+                    }
+                }
+
+                // write lines to csv
+                File.WriteAllLines(csvFilePath, lines);
+
+                MessageBox.Show("Data saved successfully to " + csvFilePath, "Save Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            // exception handling for file writing
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while saving the file: " + ex.Message, "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void Title_Click(object sender, EventArgs e)
