@@ -13,6 +13,20 @@ namespace Voice_Based_Winforms_App
             InitializeComponent();
         }
 
+        // extra button to go to form 2        
+        private void form2btn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Form2 form2 = new Form2();
+                form2.Show();
+                this.Hide();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
             txtOutput.Text = "Click the button and start speaking";
@@ -101,7 +115,8 @@ namespace Voice_Based_Winforms_App
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            
+
         }
+
     }
 }

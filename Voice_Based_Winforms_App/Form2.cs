@@ -27,11 +27,7 @@ namespace Voice_Based_Winforms_App
 
         // TODO LIST
 
-        // TODO: add save button functionality
-        // TODO: add input validation - don't allow blank fields
-        // TODO: clear input fields method instead of doing everything separately
-        // TODO: make it so CSV doesnt reset on close, saves information
-
+            // TODO: see if we can use a database instead of CSV
         // TODO: convert text boxes to voice commands
 
         private void Form2_Load(object sender, EventArgs e)
@@ -45,18 +41,17 @@ namespace Voice_Based_Winforms_App
 
         private void addBtn_Click(object sender, EventArgs e)
         {
+            if (validateInputs()) {
             // add new row to DataGrid
             dataGridView1.Rows.Add(fNameBox.Text, lNameBox.Text, cityBox.Text, countryBox.Text);
             // clear input fields
-            fNameBox.Clear();
-            lNameBox.Clear();
-            cityBox.Clear();
-            countryBox.Clear();
+            clearInputs();
+            }
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            if(dataGridView1.SelectedRows.Count > 0) // prevents user from selecting 0 rows
+            if(dataGridView1.SelectedRows.Count > 0 && validateInputs()) // prevents user from selecting 0 rows
             {
                 // get selected row
                 DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
@@ -66,10 +61,7 @@ namespace Voice_Based_Winforms_App
                 selectedRow.Cells["City"].Value = cityBox.Text;
                 selectedRow.Cells["Country"].Value = countryBox.Text;
                 // clear input fields
-                fNameBox.Clear(); 
-                lNameBox.Clear();
-                cityBox.Clear(); 
-                countryBox.Clear();
+                clearInputs();
             }
             else
             {
@@ -84,10 +76,7 @@ namespace Voice_Based_Winforms_App
                 // remove selected row
                 dataGridView1.Rows.RemoveAt(dataGridView1.SelectedRows[0].Index);
                 // clear input fields
-                fNameBox.Clear();
-                lNameBox.Clear();
-                cityBox.Clear();
-                countryBox.Clear();
+                clearInputs();
             }
             else
             {
@@ -149,6 +138,27 @@ namespace Voice_Based_Winforms_App
             {
                 MessageBox.Show("An error occurred while saving the file: " + ex.Message, "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void clearInputs()
+        {
+            fNameBox.Clear();
+            lNameBox.Clear();
+            cityBox.Clear();
+            countryBox.Clear();
+        }
+
+        private bool validateInputs()
+        {
+            if (string.IsNullOrWhiteSpace(fNameBox.Text) ||
+                string.IsNullOrWhiteSpace(lNameBox.Text) ||
+                string.IsNullOrWhiteSpace(cityBox.Text) ||
+                string.IsNullOrWhiteSpace(countryBox.Text))
+            {
+                MessageBox.Show("Please fill in all fields.");
+                return false;
+            }
+            return true;
         }
 
         private void Title_Click(object sender, EventArgs e)

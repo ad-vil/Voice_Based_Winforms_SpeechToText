@@ -32,6 +32,7 @@
             txtOutput = new TextBox();
             btnStop = new Button();
             Title = new Label();
+            form2btn = new Button();
             SuspendLayout();
             // 
             // btnStart
@@ -55,7 +56,7 @@
             txtOutput.TextChanged += textBox1_TextChanged;
             // 
             // btnStop
-            // 
+            //  
             btnStop.Location = new Point(353, 375);
             btnStop.Name = "btnStop";
             btnStop.Size = new Size(94, 29);
@@ -74,11 +75,22 @@
             Title.TabIndex = 3;
             Title.Text = "Speech to Text Application";
             // 
+            // form2btn
+            // 
+            form2btn.Location = new Point(666, 12);
+            form2btn.Name = "form2btn";
+            form2btn.Size = new Size(122, 52);
+            form2btn.TabIndex = 4;
+            form2btn.Text = "Go to form 2";
+            form2btn.UseVisualStyleBackColor = true;
+            form2btn.Click += form2btn_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(form2btn);
             Controls.Add(Title);
             Controls.Add(btnStop);
             Controls.Add(txtOutput);
@@ -96,5 +108,6 @@
         private TextBox txtOutput;
         private Button btnStop;
         private Label Title;
+        private Button form2btn;
     }
 }
