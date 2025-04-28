@@ -40,6 +40,7 @@
             btnLoad = new Button();
             btnSave = new Button();
             dataGridView1 = new DataGridView();
+            viewPatientBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -159,11 +160,22 @@
             dataGridView1.Size = new Size(407, 210);
             dataGridView1.TabIndex = 11;
             // 
+            // viewPatientBtn
+            // 
+            viewPatientBtn.Location = new Point(471, 310);
+            viewPatientBtn.Name = "viewPatientBtn";
+            viewPatientBtn.Size = new Size(151, 29);
+            viewPatientBtn.TabIndex = 12;
+            viewPatientBtn.Text = "View Patient";
+            viewPatientBtn.UseVisualStyleBackColor = true;
+            viewPatientBtn.Click += viewPatientBtn_Click;
+            // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(viewPatientBtn);
             Controls.Add(dataGridView1);
             Controls.Add(btnSave);
             Controls.Add(btnLoad);
@@ -198,5 +210,6 @@
         private Button btnLoad;
         private Button btnSave;
         private DataGridView dataGridView1;
+        private Button viewPatientBtn;
     }
 }

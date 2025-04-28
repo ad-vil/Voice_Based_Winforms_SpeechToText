@@ -27,7 +27,7 @@ namespace Voice_Based_Winforms_App
 
         // TODO LIST
 
-            // TODO: see if we can use a database instead of CSV
+        // TODO: see if we can use a database instead of CSV
         // TODO: convert text boxes to voice commands
 
         private void Form2_Load(object sender, EventArgs e)
@@ -41,17 +41,18 @@ namespace Voice_Based_Winforms_App
 
         private void addBtn_Click(object sender, EventArgs e)
         {
-            if (validateInputs()) {
-            // add new row to DataGrid
-            dataGridView1.Rows.Add(fNameBox.Text, lNameBox.Text, cityBox.Text, countryBox.Text);
-            // clear input fields
-            clearInputs();
+            if (validateInputs())
+            {
+                // add new row to DataGrid
+                dataGridView1.Rows.Add(fNameBox.Text, lNameBox.Text, cityBox.Text, countryBox.Text);
+                // clear input fields
+                clearInputs();
             }
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            if(dataGridView1.SelectedRows.Count > 0 && validateInputs()) // prevents user from selecting 0 rows
+            if (dataGridView1.SelectedRows.Count > 0 && validateInputs()) // prevents user from selecting 0 rows
             {
                 // get selected row
                 DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
@@ -184,6 +185,27 @@ namespace Voice_Based_Winforms_App
         private void countryBox_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void viewPatientBtn_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                // selecting patient data
+                var selectedRow = dataGridView1.SelectedRows[0];
+                string firstName = selectedRow.Cells["FirstName"].Value.ToString();
+                string lastName = selectedRow.Cells["LastName"].Value.ToString();
+                string city = selectedRow.Cells["City"].Value.ToString();
+                string country = selectedRow.Cells["Country"].Value.ToString();
+
+                Form3 form3 = new Form3(firstName, lastName, city, country); // have to pass info to form 3
+                form3.Show();
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Please select a patient to view.");
+            }
         }
     }
 }
