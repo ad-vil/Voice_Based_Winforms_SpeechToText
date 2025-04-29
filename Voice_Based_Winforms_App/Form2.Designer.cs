@@ -137,7 +137,7 @@
             btnLoad.Name = "btnLoad";
             btnLoad.Size = new Size(94, 29);
             btnLoad.TabIndex = 9;
-            btnLoad.Text = "Load CSV";
+            btnLoad.Text = "Reload CSV";
             btnLoad.UseVisualStyleBackColor = true;
             btnLoad.Click += btnLoad_Click;
             // 
@@ -191,6 +191,7 @@
             Name = "Form2";
             Text = "Form2";
             Load += Form2_Load;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form2_FormClosing);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -211,5 +212,6 @@
         private Button btnSave;
         private DataGridView dataGridView1;
         private Button viewPatientBtn;
+
     }
 }

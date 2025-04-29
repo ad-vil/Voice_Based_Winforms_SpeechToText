@@ -37,6 +37,14 @@ namespace Voice_Based_Winforms_App
             dataGridView1.Columns.Add("LastName", "Last Name");
             dataGridView1.Columns.Add("City", "City");
             dataGridView1.Columns.Add("Country", "Country");
+
+            // auto load csv
+            btnLoad_Click(this, EventArgs.Empty); // args simnulate the btn click
+        }
+
+        private void Form2_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            btnSave_Click(this, EventArgs.Empty); // auto save form on close
         }
 
         private void addBtn_Click(object sender, EventArgs e)
@@ -74,10 +82,14 @@ namespace Voice_Based_Winforms_App
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
-                // remove selected row
-                dataGridView1.Rows.RemoveAt(dataGridView1.SelectedRows[0].Index);
-                // clear input fields
-                clearInputs();
+                var result = MessageBox.Show("Are you sure you want to delete this?"); // delete confirmation
+                if (result == DialogResult.Yes)
+                {
+                    // remove selected row
+                    dataGridView1.Rows.RemoveAt(dataGridView1.SelectedRows[0].Index);
+                    // clear input fields
+                    clearInputs();
+                }
             }
             else
             {
