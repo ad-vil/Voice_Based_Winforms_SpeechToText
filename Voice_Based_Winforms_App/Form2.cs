@@ -7,11 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.CognitiveServices.Speech;
 
 namespace Voice_Based_Winforms_App
 {
     public partial class Form2 : Form
     {
+        private SpeechRecognizer? recognizer;
+        private int transcriptionState = 0; // init transcription status
+
         public Form2()
         {
             InitializeComponent();
@@ -219,5 +223,111 @@ namespace Voice_Based_Winforms_App
                 MessageBox.Show("Please select a patient to view.");
             }
         }
+
+        // transcription for commands in form 2
+
+        // TODO:
+        // fix follow up on commands like "enter new patient" command doesnt do anything yet
+        // work on trying to make it better at recognizing commands?
+        // names might be hard to capture, need to find a fix for that.
+        private async void startTranscriptionBtn_Click(object sender, EventArgs e)
+        {
+            var config = SpeechConfig.FromSubscription("EjD6w7pk9R811xWEUR9jVOfx8k1ndsVGjHkEfwwrsAjH5L5StuETJQQJ99BDACqBBLyXJ3w3AAAYACOGqJcR", "southeastasia");
+            recognizer = new SpeechRecognizer(config);
+
+            textBox1.Clear();
+            SafeAppend("Listening...\r\n");
+
+            recognizer.Recognizing += (s, evt) =>
+            {
+                SafeAppend($"Heard: {evt.Result.Text}\r\n");
+            };
+
+            recognizer.Recognized += (s, evt) =>
+            {
+                if (evt.Result.Reason == ResultReason.RecognizedSpeech)
+                {
+                    SafeAppend($"Recognized: {evt.Result.Text}\r\n");
+
+                    if (transcriptionState == 0 && evt.Result.Text.Equals("Enter new patient", StringComparison.OrdinalIgnoreCase)) // recognize entering new patient
+                    {
+                        transcriptionState = 1;
+                        SafeAppend("State patient first name, last name, city, and country.\r\n");
+                    }
+                    else if (transcriptionState == 1)
+                    {
+                        var details = evt.Result.Text.Split(' ');
+                        if (details.Length == 4)
+                        {
+                            string firstName = details[0];
+                            string lastName = details[1];
+                            string city = details[2];
+                            string country = details[3];
+
+                            dataGridView1.Rows.Add(firstName, lastName, city, country);
+                            btnSave_Click(this, EventArgs.Empty); // sim button save click
+
+                            SafeAppend($"Entered patient {firstName} {lastName} from {city}, {country} into CSV.\r\n");
+                            transcriptionState = 0;
+                        }
+                        else
+                        {
+                            SafeAppend("Invalid input. Please state first name, last name, city, and country.\r\n");
+                        }
+                    }
+                }
+                else if (evt.Result.Reason == ResultReason.NoMatch)
+                {
+                    SafeAppend("No speech was recognized.\r\n");
+                }
+            };
+
+            recognizer.Canceled += (s, evt) =>
+            {
+                SafeAppend($"Recognition canceled: {evt.Reason}\r\n");
+                if (evt.Reason == CancellationReason.Error)
+                {
+                    SafeAppend($"Error details: {evt.ErrorDetails}\r\n");
+                }
+            };
+
+            recognizer.SessionStopped += (s, evt) =>
+            {
+                SafeAppend("Recognition stopped.\r\n");
+            };
+
+            await recognizer.StartContinuousRecognitionAsync();
+        }
+
+        private async void endTranscriptionBtn_Click(object sender, EventArgs e)
+        {
+            if (recognizer != null)
+            {
+                await recognizer.StopContinuousRecognitionAsync();
+                recognizer.Dispose();
+                recognizer = null;
+            }
+            SafeAppend("Transcription stopped.\r\n");
+        }
+
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        
+        private void SafeAppend(string message)
+        {
+            if (textBox1.InvokeRequired)
+            {
+                textBox1.Invoke(new MethodInvoker(() => textBox1.AppendText(message)));
+            }
+            else
+            {
+                textBox1.AppendText(message);
+            }
+        }
+
     }
 }

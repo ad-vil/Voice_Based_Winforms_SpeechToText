@@ -41,6 +41,9 @@
             btnSave = new Button();
             dataGridView1 = new DataGridView();
             viewPatientBtn = new Button();
+            textBox1 = new TextBox();
+            startTranscriptionBtn = new Button();
+            endTranscriptionBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -103,7 +106,7 @@
             // 
             // addBtn
             // 
-            addBtn.Location = new Point(353, 367);
+            addBtn.Location = new Point(168, 339);
             addBtn.Name = "addBtn";
             addBtn.Size = new Size(94, 29);
             addBtn.TabIndex = 6;
@@ -113,7 +116,7 @@
             // 
             // btnUpdate
             // 
-            btnUpdate.Location = new Point(57, 367);
+            btnUpdate.Location = new Point(57, 339);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(94, 29);
             btnUpdate.TabIndex = 7;
@@ -123,7 +126,7 @@
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(205, 367);
+            btnDelete.Location = new Point(57, 381);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(94, 29);
             btnDelete.TabIndex = 8;
@@ -133,9 +136,9 @@
             // 
             // btnLoad
             // 
-            btnLoad.Location = new Point(501, 367);
+            btnLoad.Location = new Point(576, 222);
             btnLoad.Name = "btnLoad";
-            btnLoad.Size = new Size(94, 29);
+            btnLoad.Size = new Size(130, 29);
             btnLoad.TabIndex = 9;
             btnLoad.Text = "Reload CSV";
             btnLoad.UseVisualStyleBackColor = true;
@@ -143,7 +146,7 @@
             // 
             // btnSave
             // 
-            btnSave.Location = new Point(649, 367);
+            btnSave.Location = new Point(168, 381);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(94, 29);
             btnSave.TabIndex = 10;
@@ -157,24 +160,56 @@
             dataGridView1.Location = new Point(336, 94);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(407, 210);
+            dataGridView1.Size = new Size(407, 122);
             dataGridView1.TabIndex = 11;
             // 
             // viewPatientBtn
             // 
-            viewPatientBtn.Location = new Point(471, 310);
+            viewPatientBtn.Location = new Point(384, 222);
             viewPatientBtn.Name = "viewPatientBtn";
-            viewPatientBtn.Size = new Size(151, 29);
+            viewPatientBtn.Size = new Size(126, 29);
             viewPatientBtn.TabIndex = 12;
             viewPatientBtn.Text = "View Patient";
             viewPatientBtn.UseVisualStyleBackColor = true;
             viewPatientBtn.Click += viewPatientBtn_Click;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(336, 268);
+            textBox1.Multiline = true;
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(407, 100);
+            textBox1.TabIndex = 13;
+            textBox1.TextChanged += textBox1_TextChanged;
+            // 
+            // startTranscriptionBtn
+            // 
+            startTranscriptionBtn.Location = new Point(384, 381);
+            startTranscriptionBtn.Name = "startTranscriptionBtn";
+            startTranscriptionBtn.Size = new Size(126, 57);
+            startTranscriptionBtn.TabIndex = 14;
+            startTranscriptionBtn.Text = "Start Transcription";
+            startTranscriptionBtn.UseVisualStyleBackColor = true;
+            startTranscriptionBtn.Click += startTranscriptionBtn_Click;
+            // 
+            // endTranscriptionBtn
+            // 
+            endTranscriptionBtn.Location = new Point(576, 381);
+            endTranscriptionBtn.Name = "endTranscriptionBtn";
+            endTranscriptionBtn.Size = new Size(130, 57);
+            endTranscriptionBtn.TabIndex = 15;
+            endTranscriptionBtn.Text = "End Transcription";
+            endTranscriptionBtn.UseVisualStyleBackColor = true;
+            endTranscriptionBtn.Click += endTranscriptionBtn_Click;
             // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(endTranscriptionBtn);
+            Controls.Add(startTranscriptionBtn);
+            Controls.Add(textBox1);
             Controls.Add(viewPatientBtn);
             Controls.Add(dataGridView1);
             Controls.Add(btnSave);
@@ -190,8 +225,8 @@
             Controls.Add(Title);
             Name = "Form2";
             Text = "Form2";
+            FormClosing += Form2_FormClosing;
             Load += Form2_Load;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form2_FormClosing);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -212,6 +247,8 @@
         private Button btnSave;
         private DataGridView dataGridView1;
         private Button viewPatientBtn;
-
+        private TextBox textBox1;
+        private Button startTranscriptionBtn;
+        private Button endTranscriptionBtn;
     }
 }
