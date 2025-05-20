@@ -41,5 +41,12 @@ namespace Voice_Based_Winforms_App
             form2.Show();
             this.Close();
         }
+
+        private void btnNextForm_Click(object sender, EventArgs e)
+        {
+            Form4 form4 = new Form4();
+            form4.Show();
+            this.Close();
+        }
     }
 }

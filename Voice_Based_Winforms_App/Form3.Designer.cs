@@ -40,6 +40,7 @@
             lastNameLbl = new Label();
             cityLbl = new Label();
             countryLbl = new Label();
+            btnNextForm = new Button();
             ((System.ComponentModel.ISupportInitialize)kneePainSlider).BeginInit();
             ((System.ComponentModel.ISupportInitialize)elbowPainSlider).BeginInit();
             ((System.ComponentModel.ISupportInitialize)shoulderPainSlider).BeginInit();
@@ -152,11 +153,22 @@
             countryLbl.TabIndex = 4;
             countryLbl.Text = "countryLbl";
             // 
+            // btnNextForm
+            // 
+            btnNextForm.Location = new Point(694, 12);
+            btnNextForm.Name = "btnNextForm";
+            btnNextForm.Size = new Size(94, 29);
+            btnNextForm.TabIndex = 5;
+            btnNextForm.Text = "To Form 4";
+            btnNextForm.UseVisualStyleBackColor = true;
+            btnNextForm.Click += btnNextForm_Click;
+            // 
             // Form3
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnNextForm);
             Controls.Add(countryLbl);
             Controls.Add(cityLbl);
             Controls.Add(lastNameLbl);
@@ -193,5 +205,6 @@
         private Label lastNameLbl;
         private Label cityLbl;
         private Label countryLbl;
+        private Button btnNextForm;
     }
 }

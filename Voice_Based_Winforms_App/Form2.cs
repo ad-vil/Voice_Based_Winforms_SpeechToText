@@ -249,31 +249,14 @@ namespace Voice_Based_Winforms_App
                 {
                     SafeAppend($"Recognized: {evt.Result.Text}\r\n");
 
-                    if (transcriptionState == 0 && evt.Result.Text.Equals("Enter new patient", StringComparison.OrdinalIgnoreCase)) // recognize entering new patient
+                    if (transcriptionState == 0 && evt.Result.Text.Equals("Enter new patient", StringComparison.OrdinalIgnoreCase))
                     {
                         transcriptionState = 1;
                         SafeAppend("State patient first name, last name, city, and country.\r\n");
                     }
                     else if (transcriptionState == 1)
                     {
-                        var details = evt.Result.Text.Split(' ');
-                        if (details.Length == 4)
-                        {
-                            string firstName = details[0];
-                            string lastName = details[1];
-                            string city = details[2];
-                            string country = details[3];
-
-                            dataGridView1.Rows.Add(firstName, lastName, city, country);
-                            btnSave_Click(this, EventArgs.Empty); // sim button save click
-
-                            SafeAppend($"Entered patient {firstName} {lastName} from {city}, {country} into CSV.\r\n");
-                            transcriptionState = 0;
-                        }
-                        else
-                        {
-                            SafeAppend("Invalid input. Please state first name, last name, city, and country.\r\n");
-                        }
+                        processPatientDetails(evt.Result.Text);
                     }
                 }
                 else if (evt.Result.Reason == ResultReason.NoMatch)
@@ -291,9 +274,10 @@ namespace Voice_Based_Winforms_App
                 }
             };
 
-            recognizer.SessionStopped += (s, evt) =>
+            recognizer.SessionStopped += async (s, evt) =>
             {
-                SafeAppend("Recognition stopped.\r\n");
+                SafeAppend("Recognition stopped. Restarting...\r\n");
+                await recognizer.StartContinuousRecognitionAsync(); // Restart recognition
             };
 
             await recognizer.StartContinuousRecognitionAsync();
@@ -326,6 +310,30 @@ namespace Voice_Based_Winforms_App
             else
             {
                 textBox1.AppendText(message);
+            }
+        }
+        private void processPatientDetails(string text)
+        {
+            var details = text.Split(' '); // Split by space
+            if (details.Length == 4)
+            {
+                string firstName = details[0];
+                string lastName = details[1];
+                string city = details[2];
+                string country = details[3];
+
+                // Add new row to DataGrid
+                dataGridView1.Rows.Add(firstName, lastName, city, country);
+
+                // Save to CSV
+                btnSave_Click(this, EventArgs.Empty);
+
+                SafeAppend($"Entered patient {firstName} {lastName} from {city}, {country} into CSV.\r\n");
+                transcriptionState = 0; // Reset state
+            }
+            else
+            {
+                SafeAppend("Invalid input. Please state first name, last name, city, and country.\r\n");
             }
         }
 
