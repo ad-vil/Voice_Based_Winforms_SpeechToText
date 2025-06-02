@@ -31,8 +31,8 @@ namespace Voice_Based_Winforms_App
 
         // TODO LIST
 
-        // TODO: see if we can use a database instead of CSV
-        // TODO: convert text boxes to voice commands
+        // TODO: see if we can use a database instead of CSV **
+        //       convert input text boxes to voice commands - idk how to do this with unique names but it seems decent w most 
 
         private void Form2_Load(object sender, EventArgs e)
         {

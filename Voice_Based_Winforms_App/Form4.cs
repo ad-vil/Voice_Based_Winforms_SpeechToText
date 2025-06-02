@@ -15,19 +15,23 @@ namespace Voice_Based_Winforms_App
     public partial class Form4 : Form
     {
 
-        private SpeechRecognizer? recognizer;
-        public Form4()
-        {
-            InitializeComponent();
-        }
+        // TODO: implement actual training feature?
+        // this form is a placeholder for future training functionality, and a space to help the user get familiar w azure model
 
+        // define training phrases 
+        private readonly string[] trainingPhrases = { "Hello", "Goodbye", "Start", "Stop", "Enter new patient" };
+        private int currentPhraseIndex = 0;
+
+        // model shows phrase, then user repeats it
         private async void btnStartTraining_Click(object sender, EventArgs e)
         {
             var config = SpeechConfig.FromSubscription("EjD6w7pk9R811xWEUR9jVOfx8k1ndsVGjHkEfwwrsAjH5L5StuETJQQJ99BDACqBBLyXJ3w3AAAYACOGqJcR", "southeastasia");
             recognizer = new SpeechRecognizer(config);
 
             txtTraining.Clear();
-            SafeAppend("Voice training started. Please say the training phrases.\r\n");
+            currentPhraseIndex = 0;
+            SafeAppend("Voice training started.\r\n");
+            SafeAppend($"Please say: \"{trainingPhrases[currentPhraseIndex]}\"\r\n");
 
             recognizer.Recognizing += (s, evt) =>
             {
@@ -58,12 +62,46 @@ namespace Voice_Based_Winforms_App
             recognizer.SessionStopped += async (s, evt) =>
             {
                 SafeAppend("Recognition stopped. Restarting...\r\n");
-                await recognizer.StartContinuousRecognitionAsync(); // Restart recognition
+                await recognizer.StartContinuousRecognitionAsync();
             };
 
             await recognizer.StartContinuousRecognitionAsync();
         }
 
+        private void HandleTrainingPhrase(string text)
+        {
+            // normalize recognized text and expected phrase. trim punctuation at the end
+            string recognized = text.Trim().ToLowerInvariant().TrimEnd('.', '!', '?');
+            string expected = trainingPhrases[currentPhraseIndex].ToLowerInvariant();
+
+            if (currentPhraseIndex < trainingPhrases.Length &&
+                (recognized == expected || recognized.Replace(" ", "") == expected.Replace(" ", "")))
+            {
+                SafeAppend($"Training phrase recognized: {text}\r\n");
+                currentPhraseIndex++;
+                if (currentPhraseIndex < trainingPhrases.Length)
+                {
+                    SafeAppend($"Next, please say: \"{trainingPhrases[currentPhraseIndex]}\"\r\n");
+                }
+                else
+                {
+                    SafeAppend("Training complete! You have finished all phrases.\r\n");
+                }
+            }
+            else
+            {
+                SafeAppend($"Unrecognized or out-of-order phrase: {text}. Please say: \"{trainingPhrases[currentPhraseIndex]}\"\r\n");
+            }
+        }
+
+        // TODO: add mic icon and loading spinner
+
+        private SpeechRecognizer? recognizer;
+        public Form4()
+        {
+            InitializeComponent();
+        }
+       
         private async void btnStopTraining_Click(object sender, EventArgs e)
         {
             if (recognizer != null)
@@ -84,22 +122,6 @@ namespace Voice_Based_Winforms_App
             else
             {
                 txtTraining.AppendText(message);
-            }
-        }
-
-
-        private void HandleTrainingPhrase(string text)
-        {
-            // Define training phrases
-            var trainingPhrases = new[] { "Hello", "Goodbye", "Start", "Stop", "Enter new patient" };
-
-            if (Array.Exists(trainingPhrases, phrase => phrase.Equals(text, StringComparison.OrdinalIgnoreCase)))
-            {
-                SafeAppend($"Training phrase recognized: {text}\r\n");
-            }
-            else
-            {
-                SafeAppend($"Unrecognized phrase: {text}. Please try again.\r\n");
             }
         }
 

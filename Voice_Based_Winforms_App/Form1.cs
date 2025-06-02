@@ -9,6 +9,7 @@ namespace Voice_Based_Winforms_App
         private SpeechRecognizer? recognizer;
 
         // TODO: add mic icon and loading spinner
+        //       maybe add something to this form later? its just placeholder right now
         public Form1()
         {
             InitializeComponent();
