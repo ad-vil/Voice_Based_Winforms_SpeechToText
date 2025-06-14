@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.CognitiveServices.Speech;
 
@@ -31,49 +25,65 @@ namespace Voice_Based_Winforms_App
 
         // TODO LIST
 
-        // TODO: see if we can use a database instead of CSV **
+        // TODO: finish implementing DB in this file
         //       convert input text boxes to voice commands - idk how to do this with unique names but it seems decent w most 
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            // initalize DataGrid columns
+            // initialize DataGrid columns
+            dataGridView1.Columns.Clear();
+            dataGridView1.Columns.Add("Id", "Id");
+            dataGridView1.Columns["Id"].Visible = false; // hide id from user
             dataGridView1.Columns.Add("FirstName", "First Name");
             dataGridView1.Columns.Add("LastName", "Last Name");
             dataGridView1.Columns.Add("City", "City");
             dataGridView1.Columns.Add("Country", "Country");
 
-            // auto load csv
-            btnLoad_Click(this, EventArgs.Empty); // args simnulate the btn click
+            LoadPatients(); // load from db
         }
 
         private void Form2_FormClosing(object sender, FormClosingEventArgs e)
         {
-            btnSave_Click(this, EventArgs.Empty); // auto save form on close
+            // no need to save anymore, db is always up to date
         }
 
         private void addBtn_Click(object sender, EventArgs e)
         {
             if (validateInputs())
             {
-                // add new row to DataGrid
-                dataGridView1.Rows.Add(fNameBox.Text, lNameBox.Text, cityBox.Text, countryBox.Text);
-                // clear input fields
+                // add new patient to db
+                var p = new Patient
+                {
+                    FirstName = fNameBox.Text,
+                    LastName = lNameBox.Text,
+                    City = cityBox.Text,
+                    Country = countryBox.Text
+                };
+                PatientRepository.Add(p);
+                LoadPatients();
                 clearInputs();
             }
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.SelectedRows.Count > 0 && validateInputs()) // prevents user from selecting 0 rows
+            if (dataGridView1.SelectedRows.Count > 0 && validateInputs())
             {
                 // get selected row
+                // need to make it so when you select a row it autfills into text boxes
                 DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
-                // update row with new values
-                selectedRow.Cells["FirstName"].Value = fNameBox.Text;
-                selectedRow.Cells["LastName"].Value = lNameBox.Text;
-                selectedRow.Cells["City"].Value = cityBox.Text;
-                selectedRow.Cells["Country"].Value = countryBox.Text;
-                // clear input fields
+                int id = Convert.ToInt32(selectedRow.Cells["Id"].Value);
+                // update patient in db
+                var p = new Patient
+                {
+                    Id = id,
+                    FirstName = fNameBox.Text,
+                    LastName = lNameBox.Text,
+                    City = cityBox.Text,
+                    Country = countryBox.Text
+                };
+                PatientRepository.Update(p);
+                LoadPatients();
                 clearInputs();
             }
             else
@@ -82,16 +92,17 @@ namespace Voice_Based_Winforms_App
             }
         }
 
+        // THIS DOESNT WORK YET, NEED TO FIX IT
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
-                var result = MessageBox.Show("Are you sure you want to delete this?"); // delete confirmation
+                var result = MessageBox.Show("Are you sure you want to delete this?");
                 if (result == DialogResult.Yes)
                 {
-                    // remove selected row
-                    dataGridView1.Rows.RemoveAt(dataGridView1.SelectedRows[0].Index);
-                    // clear input fields
+                    int id = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells["Id"].Value);
+                    PatientRepository.Delete(id);
+                    LoadPatients();
                     clearInputs();
                 }
             }
@@ -101,59 +112,14 @@ namespace Voice_Based_Winforms_App
             }
         }
 
-        private void btnLoad_Click(object sender, EventArgs e)
+
+        private void LoadPatients()
         {
-            string csvFilePath = "data.csv";
-
-            if (File.Exists(csvFilePath))
+            dataGridView1.Rows.Clear();
+            var patients = PatientRepository.GetAll();
+            foreach (var p in patients)
             {
-                dataGridView1.Rows.Clear(); // clear existing rows - avoids duplicating
-                var lines = File.ReadAllLines(csvFilePath);
-                foreach (var line in lines)
-                {
-                    var values = line.Split(','); // comma for separation btwn values
-                    dataGridView1.Rows.Add(values);
-                }
-            }
-            else
-            {
-                MessageBox.Show("CSV file not found.");
-            }
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            string csvFilePath = "data.csv";
-
-            try
-            {
-                var lines = new List<string>();
-
-                foreach (DataGridViewRow row in dataGridView1.Rows)
-                {
-                    if (!row.IsNewRow) // skipping new placeholder
-                    {
-                        // extracting values in cells
-                        var values = new string[]
-                        {
-                            row.Cells["FirstName"].Value?.ToString() ?? "",
-                            row.Cells["LastName"].Value?.ToString() ?? "",
-                            row.Cells["City"].Value?.ToString() ?? "",
-                            row.Cells["Country"].Value?.ToString() ?? ""
-                        };
-                        lines.Add(string.Join(",", values));
-                    }
-                }
-
-                // write lines to csv
-                File.WriteAllLines(csvFilePath, lines);
-
-                MessageBox.Show("Data saved successfully to " + csvFilePath, "Save Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            // exception handling for file writing
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred while saving the file: " + ex.Message, "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dataGridView1.Rows.Add(p.Id, p.FirstName, p.LastName, p.City, p.Country);
             }
         }
 
@@ -214,7 +180,7 @@ namespace Voice_Based_Winforms_App
                 string city = selectedRow.Cells["City"].Value.ToString();
                 string country = selectedRow.Cells["Country"].Value.ToString();
 
-                Form3 form3 = new Form3(firstName, lastName, city, country); // have to pass info to form 3
+                Form3 form3 = new Form3(firstName, lastName, city, country); // pass info to form 3
                 form3.Show();
                 this.Close();
             }
@@ -224,10 +190,10 @@ namespace Voice_Based_Winforms_App
             }
         }
 
-        // transcription for commands in form 2
+        // transcription for commands in form 2 - doesnt do anything useful yet
 
         // TODO:
-        // fix follow up on commands like "enter new patient" command doesnt do anything yet
+        // fix follow up on commands like "enter new patient" command doesnt do anything yet - want to use whisper ai?
         // work on trying to make it better at recognizing commands?
         // names might be hard to capture, need to find a fix for that.
         private async void startTranscriptionBtn_Click(object sender, EventArgs e)
@@ -277,7 +243,7 @@ namespace Voice_Based_Winforms_App
             recognizer.SessionStopped += async (s, evt) =>
             {
                 SafeAppend("Recognition stopped. Restarting...\r\n");
-                await recognizer.StartContinuousRecognitionAsync(); // Restart recognition
+                await recognizer.StartContinuousRecognitionAsync(); // restart recognition
             };
 
             await recognizer.StartContinuousRecognitionAsync();
@@ -294,13 +260,11 @@ namespace Voice_Based_Winforms_App
             SafeAppend("Transcription stopped.\r\n");
         }
 
-
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        
         private void SafeAppend(string message)
         {
             if (textBox1.InvokeRequired)
@@ -312,30 +276,28 @@ namespace Voice_Based_Winforms_App
                 textBox1.AppendText(message);
             }
         }
+
         private void processPatientDetails(string text)
         {
-            var details = text.Split(' '); // Split by space
+            var details = text.Split(' '); // split by space
             if (details.Length == 4)
             {
-                string firstName = details[0];
-                string lastName = details[1];
-                string city = details[2];
-                string country = details[3];
-
-                // Add new row to DataGrid
-                dataGridView1.Rows.Add(firstName, lastName, city, country);
-
-                // Save to CSV
-                btnSave_Click(this, EventArgs.Empty);
-
-                SafeAppend($"Entered patient {firstName} {lastName} from {city}, {country} into CSV.\r\n");
-                transcriptionState = 0; // Reset state
+                var p = new Patient
+                {
+                    FirstName = details[0],
+                    LastName = details[1],
+                    City = details[2],
+                    Country = details[3]
+                };
+                PatientRepository.Add(p);
+                LoadPatients();
+                SafeAppend($"Entered patient {p.FirstName} {p.LastName} from {p.City}, {p.Country} into database.\r\n");
+                transcriptionState = 0; // reset state
             }
             else
             {
                 SafeAppend("Invalid input. Please state first name, last name, city, and country.\r\n");
             }
         }
-
     }
 }
