@@ -30,6 +30,8 @@ namespace Voice_Based_Winforms_App
 
         private void Form2_Load(object sender, EventArgs e)
         {
+            string path = "Data Source=patientDatabase.db";
+
             // initialize DataGrid columns
             dataGridView1.Columns.Clear();
             dataGridView1.Columns.Add("Id", "Id");

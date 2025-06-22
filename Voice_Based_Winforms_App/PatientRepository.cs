@@ -1,18 +1,4 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-
-//namespace Voice_Based_Winforms_App
-//{
-//    internal class PatientRepository
-//    {
-//    }
-//}
-
-
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
 using System.Collections.Generic;
 
 namespace Voice_Based_Winforms_App
@@ -28,7 +14,7 @@ namespace Voice_Based_Winforms_App
 
     public static class PatientRepository
     {
-        private static readonly string _connectionString = "Data Source=patientDatabase.db";
+        private static readonly string _connectionString = "Data Source=\"C:\\Users\\adil_\\source\\repos\\Voice_Based_Winforms_SpeechToText\\Voice_Based_Winforms_App\\patientDatabase.db\"";
 
         public static List<Patient> GetAll()
         {
